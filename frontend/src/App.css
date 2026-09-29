@@ -56,6 +56,15 @@ tr:hover td { background: #f8fafc; }
 /* Error */
 .error { color: #dc2626; font-size: 0.9rem; }
 
+/* Loading */
+.loading { color: #64748b; font-size: 0.95rem; padding: 16px 0; }
+
+/* Pagination */
+.pagination { display: flex; align-items: center; gap: 12px; justify-content: flex-end; }
+.pagination button { padding: 6px 14px; background: #e2e8f0; border: none; border-radius: 6px; cursor: pointer; font-size: 0.85rem; }
+.pagination button:disabled { opacity: 0.4; cursor: not-allowed; }
+.pagination span { font-size: 0.85rem; color: #64748b; }
+
 /* Auth */
 .auth-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #f4f6f9; }
 .auth-box { background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 16px; }

@@ -1,0 +1,19 @@
+interface Props {
+  total: number;
+  page: number;
+  pageSize: number;
+  onChange: (page: number) => void;
+}
+
+export default function Pagination({ total, page, pageSize, onChange }: Props) {
+  const totalPages = Math.ceil(total / pageSize);
+  if (totalPages <= 1) return null;
+
+  return (
+    <div className="pagination">
+      <button disabled={page === 1} onClick={() => onChange(page - 1)}>← Prev</button>
+      <span>Page {page} of {totalPages}</span>
+      <button disabled={page === totalPages} onClick={() => onChange(page + 1)}>Next →</button>
+    </div>
+  );
+}

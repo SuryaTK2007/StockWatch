@@ -4,10 +4,15 @@ import { runAllPredictions } from '../api/predictions';
 export default function Predictions() {
   const [predictions, setPredictions] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleRun = () => {
     setLoading(true);
-    runAllPredictions().then(data => { setPredictions(data); setLoading(false); });
+    setError('');
+    runAllPredictions()
+      .then(setPredictions)
+      .catch(() => setError('Failed to run predictions. Make sure you have products with inventory.'))
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -18,11 +23,11 @@ export default function Predictions() {
           {loading ? 'Running...' : 'Run Predictions'}
         </button>
       </div>
+      {error && <p className="error">{error}</p>}
+      {!loading && predictions.length === 0 && !error && <p>Click "Run Predictions" to generate predictions.</p>}
       {predictions.length > 0 && (
         <table>
-          <thead>
-            <tr><th>Product</th><th>Daily Demand</th><th>Days Until Stockout</th><th>Stockout Date</th></tr>
-          </thead>
+          <thead><tr><th>Product</th><th>Daily Demand</th><th>Days Until Stockout</th><th>Stockout Date</th></tr></thead>
           <tbody>
             {predictions.map(p => (
               <tr key={p.id}>
@@ -39,7 +44,6 @@ export default function Predictions() {
           </tbody>
         </table>
       )}
-      {predictions.length === 0 && !loading && <p>Click "Run Predictions" to generate predictions.</p>}
     </div>
   );
 }
