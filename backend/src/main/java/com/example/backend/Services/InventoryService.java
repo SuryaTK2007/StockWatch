@@ -13,9 +13,11 @@ public class InventoryService {
 
     public List<Inventory> getAll() { return inventoryRepository.findAll(); }
     public Inventory create(Inventory inventory) { return inventoryRepository.save(inventory); }
-    public Inventory update(Long id, Inventory inventory) {
-        inventory.setId(id);
-        return inventoryRepository.save(inventory);
+    public Inventory update(Long id, Inventory updated) {
+        Inventory existing = inventoryRepository.findById(id).orElseThrow();
+        existing.setQuantity(updated.getQuantity());
+        existing.setReorderThreshold(updated.getReorderThreshold());
+        return inventoryRepository.save(existing);
     }
     public void delete(Long id) { inventoryRepository.deleteById(id); }
 }
