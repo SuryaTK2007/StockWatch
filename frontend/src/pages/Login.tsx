@@ -1,12 +1,12 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { login } from '../api/auth';
 import { setToken } from '../api/token';
 
-interface Props { onSuccess: () => void; onSwitch: () => void; }
-
-export default function Login({ onSuccess, onSwitch }: Props) {
+export default function Login() {
   const [form, setForm] = useState({ username: '', password: '' });
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -14,7 +14,7 @@ export default function Login({ onSuccess, onSwitch }: Props) {
     login(form.username, form.password).then(res => {
       if (res.error) { setError(res.error); return; }
       setToken(res.token);
-      onSuccess();
+      navigate('/dashboard');
     });
   };
 
@@ -29,7 +29,7 @@ export default function Login({ onSuccess, onSwitch }: Props) {
           {error && <p className="error">{error}</p>}
           <button className="btn-primary" type="submit">Login</button>
         </form>
-        <p className="auth-switch">Don't have an account? <span onClick={onSwitch}>Register</span></p>
+        <p className="auth-switch">Don't have an account? <span onClick={() => navigate('/register')}>Register</span></p>
       </div>
     </div>
   );

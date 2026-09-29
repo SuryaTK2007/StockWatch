@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import Navbar from './components/Navbar';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import ProtectedRoute from './components/ProtectedRoute';
+import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import Products from './pages/Products';
 import Inventory from './pages/Inventory';
@@ -9,38 +10,28 @@ import Predictions from './pages/Predictions';
 import Alerts from './pages/Alerts';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import { getToken, removeToken } from './api/token';
 import './App.css';
 
-type Page = 'dashboard' | 'products' | 'inventory' | 'sales' | 'suppliers' | 'predictions' | 'alerts';
-
 export default function App() {
-  const [page, setPage] = useState<Page>('dashboard');
-  const [isLoggedIn, setIsLoggedIn] = useState(!!getToken());
-  const [showRegister, setShowRegister] = useState(false);
-
-  const handleLogout = () => { removeToken(); setIsLoggedIn(false); };
-
-  if (!isLoggedIn) {
-    return showRegister
-      ? <Register onSuccess={() => setIsLoggedIn(true)} onSwitch={() => setShowRegister(false)} />
-      : <Login onSuccess={() => setIsLoggedIn(true)} onSwitch={() => setShowRegister(true)} />;
-  }
-
-  const pages: Record<Page, JSX.Element> = {
-    dashboard: <Dashboard />,
-    products: <Products />,
-    inventory: <Inventory />,
-    sales: <Sales />,
-    suppliers: <Suppliers />,
-    predictions: <Predictions />,
-    alerts: <Alerts />,
-  };
-
   return (
-    <>
-      <Navbar current={page} onChange={setPage} onLogout={handleLogout} />
-      <main className="main">{pages[page]}</main>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route element={<ProtectedRoute />}>
+          <Route element={<Layout />}>
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/inventory" element={<Inventory />} />
+            <Route path="/sales" element={<Sales />} />
+            <Route path="/suppliers" element={<Suppliers />} />
+            <Route path="/predictions" element={<Predictions />} />
+            <Route path="/alerts" element={<Alerts />} />
+          </Route>
+        </Route>
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
