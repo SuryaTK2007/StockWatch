@@ -1,0 +1,6 @@
+{
+  "java.project.sourcePaths": ["src/main/java"],
+  "java.import.maven.enabled": true,
+  "java.project.referencedLibraries": [],
+  "java.import.projectSelection": ["backend"]
+}
