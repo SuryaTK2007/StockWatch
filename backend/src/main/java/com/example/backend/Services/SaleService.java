@@ -13,6 +13,7 @@ import java.util.List;
 public class SaleService {
     private final SaleRepository saleRepository;
     private final InventoryRepository inventoryRepository;
+    private final PredictionService predictionService;
 
     public List<Sale> getAll() { return saleRepository.findAll(); }
 
@@ -26,7 +27,9 @@ public class SaleService {
         inventory.setQuantity(inventory.getQuantity() - sale.getQuantitySold());
         inventoryRepository.save(inventory);
 
-        return saleRepository.save(sale);
+        Sale saved = saleRepository.save(sale);
+        predictionService.predictForProduct(sale.getProduct().getId());
+        return saved;
     }
 
     public void delete(Long id) { saleRepository.deleteById(id); }
