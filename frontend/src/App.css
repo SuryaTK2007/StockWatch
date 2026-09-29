@@ -70,3 +70,4 @@ tr:hover td { background: #f8fafc; }
 .auth-switch span:hover { text-decoration: underline; }
 .btn-logout { background: none; border: 1px solid #475569; color: #94a3b8; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; }
 .btn-logout:hover { background: #334155; color: #fff; }
+.navbar-user { display: flex; align-items: center; gap: 12px; color: #94a3b8; font-size: 0.9rem; }

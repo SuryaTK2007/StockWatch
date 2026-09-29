@@ -1,3 +1,5 @@
+import { getUsername } from '../api/token';
+
 type Page = 'dashboard' | 'products' | 'inventory' | 'sales' | 'suppliers' | 'predictions' | 'alerts';
 
 interface Props {
@@ -18,7 +20,10 @@ export default function Navbar({ current, onChange, onLogout }: Props) {
           </button>
         ))}
       </div>
-      <button className="btn-logout" onClick={onLogout}>Logout</button>
+      <div className="navbar-user">
+        <span>👤 {getUsername()}</span>
+        <button className="btn-logout" onClick={onLogout}>Logout</button>
+      </div>
     </nav>
   );
 }
