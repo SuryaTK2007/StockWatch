@@ -7,7 +7,7 @@ import random
 import numpy as np
 import pandas as pd
 from datetime import datetime, date, timedelta
-from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
 
 def generate_synthetic_sales(start_date: date, num_days: int = 90) -> pd.DataFrame:
     """
@@ -79,15 +79,14 @@ def test_prediction_pipeline(current_inventory_qty: float = 150.0):
     print(combined_df[['sale_date', 'quantity_sold', 'day_of_week', 'day_index', 'rolling_7', 'rolling_14']].tail(7))
     print()
 
-    print("=== 4. Training Linear Regression Model ===")
+    print("=== 4. Training Random Forest Model ===")
     feature_cols = ['day_of_week', 'day_index', 'rolling_7', 'rolling_14']
     X_train = combined_df[feature_cols]
     y_train = combined_df['quantity_sold']
     
-    model = LinearRegression()
+    model = RandomForestRegressor(n_estimators=100, max_depth=5, random_state=42)
     model.fit(X_train, y_train)
-    print(f"Model Coefficients: {dict(zip(feature_cols, model.coef_))}")
-    print(f"Model Intercept: {model.intercept_:.4f}\n")
+    print("Random Forest model trained successfully.\n")
 
     print("=== 5. Forecasting Demand for Next 7 Days ===")
     future_rows = []

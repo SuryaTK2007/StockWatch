@@ -6,7 +6,7 @@ from datetime import datetime, date, timedelta
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from sqlalchemy import create_engine, text
-from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
 
 app = FastAPI(title="StockWatch ML Service")
 
@@ -115,12 +115,12 @@ def predict_stockout(req: PredictRequest):
     # Fill any missing values
     combined_df = combined_df.fillna(0)
     
-    # 6. Train Linear Regression Model
+    # 6. Train Random Forest Model
     feature_cols = ['day_of_week', 'day_index', 'rolling_7', 'rolling_14']
     X_train = combined_df[feature_cols]
     y_train = combined_df['quantity_sold']
     
-    model = LinearRegression()
+    model = RandomForestRegressor(n_estimators=100, max_depth=5, random_state=42)
     model.fit(X_train, y_train)
     
     # 7. Predict average daily demand for next 7 days
