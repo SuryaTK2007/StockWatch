@@ -17,4 +17,8 @@ public class Alert {
     private String message;               // human-readable description of the stockout warning
     private String severity;              // urgency level: LOW (≤14 days), MEDIUM (≤7 days), HIGH (≤3 days)
     private Boolean isResolved = false;   // whether the alert has been acknowledged and acted upon
+
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private User owner;                   // the user who owns this alert
 }

@@ -17,4 +17,8 @@ public class Sale {
 
     private Double quantitySold;      // how much quantity was sold in this transaction
     private LocalDate saleDate;       // the date the sale occurred
+
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private User owner;               // the user who recorded this sale
 }

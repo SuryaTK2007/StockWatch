@@ -1,5 +1,6 @@
 package com.example.backend.Services;
 
+import com.example.backend.AuthUtil;
 import com.example.backend.Models.Inventory;
 import com.example.backend.Models.Sale;
 import com.example.backend.Repositories.InventoryRepository;
@@ -14,11 +15,13 @@ public class SaleService {
     private final SaleRepository saleRepository;
     private final InventoryRepository inventoryRepository;
     private final PredictionService predictionService;
+    private final AuthUtil authUtil;
 
-    public List<Sale> getAll() { return saleRepository.findAll(); }
+    public List<Sale> getAll() { return saleRepository.findByOwner(authUtil.getCurrentUser()); }
 
     public Sale create(Sale sale) {
-        Inventory inventory = inventoryRepository.findByProductId(sale.getProduct().getId())
+        var owner = authUtil.getCurrentUser();
+        Inventory inventory = inventoryRepository.findByProductIdAndOwner(sale.getProduct().getId(), owner)
                 .orElseThrow(() -> new RuntimeException("Inventory not found for product " + sale.getProduct().getId()));
 
         if (inventory.getQuantity() < sale.getQuantitySold())
@@ -27,6 +30,7 @@ public class SaleService {
         inventory.setQuantity(inventory.getQuantity() - sale.getQuantitySold());
         inventoryRepository.save(inventory);
 
+        sale.setOwner(owner);
         Sale saved = saleRepository.save(sale);
         predictionService.predictForProduct(sale.getProduct().getId());
         return saved;

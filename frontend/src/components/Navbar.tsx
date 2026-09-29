@@ -3,9 +3,10 @@ type Page = 'dashboard' | 'products' | 'inventory' | 'sales' | 'suppliers' | 'pr
 interface Props {
   current: Page;
   onChange: (page: Page) => void;
+  onLogout: () => void;
 }
 
-export default function Navbar({ current, onChange }: Props) {
+export default function Navbar({ current, onChange, onLogout }: Props) {
   const links: Page[] = ['dashboard', 'products', 'inventory', 'sales', 'suppliers', 'predictions', 'alerts'];
   return (
     <nav className="navbar">
@@ -17,6 +18,7 @@ export default function Navbar({ current, onChange }: Props) {
           </button>
         ))}
       </div>
+      <button className="btn-logout" onClick={onLogout}>Logout</button>
     </nav>
   );
 }

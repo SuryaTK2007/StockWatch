@@ -18,4 +18,8 @@ public class Prediction {
     private Double predictedDailyDemand;          // average units sold per day based on last 7 days
     private LocalDate predictedStockoutDate;      // estimated date when stock will run out
     private Integer daysUntilStockout;            // number of days remaining before stockout
+
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private User owner;                           // the user who owns this prediction
 }

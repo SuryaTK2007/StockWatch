@@ -1,5 +1,6 @@
 package com.example.backend.Services;
 
+import com.example.backend.AuthUtil;
 import com.example.backend.Models.Alert;
 import com.example.backend.Repositories.AlertRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,9 +11,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AlertService {
     private final AlertRepository alertRepository;
+    private final AuthUtil authUtil;
 
-    public List<Alert> getUnresolved() { return alertRepository.findByIsResolvedFalse(); }
-    public List<Alert> getAll() { return alertRepository.findAll(); }
+    public List<Alert> getUnresolved() { return alertRepository.findByOwnerAndIsResolvedFalse(authUtil.getCurrentUser()); }
+    public List<Alert> getAll() { return alertRepository.findByOwner(authUtil.getCurrentUser()); }
+
     public Alert resolve(Long id) {
         Alert alert = alertRepository.findById(id).orElseThrow();
         alert.setIsResolved(true);

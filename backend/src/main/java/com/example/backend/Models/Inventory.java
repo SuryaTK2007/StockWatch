@@ -20,4 +20,8 @@ public class Inventory {
 
     private Double quantity;              // current stock available
     private Double reorderThreshold;      // minimum stock level before a reorder should be triggered
+
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private User owner;                   // the user who created this inventory record
 }

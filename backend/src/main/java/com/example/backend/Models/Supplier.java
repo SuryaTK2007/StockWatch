@@ -12,4 +12,8 @@ public class Supplier {
     private String name;              // name of the supplier company
     private String contactEmail;      // email to reach the supplier
     private Integer leadTimeDays;     // average number of days for delivery after ordering
+
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private User owner;               // the user who created this supplier
 }
